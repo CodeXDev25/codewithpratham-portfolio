@@ -1,66 +1,116 @@
 import React, { useContext } from "react";
 import { ViewContext } from "../context/ViewContext";
-import { Sun, Moon,MoveRight } from "lucide-react";
+import { Sun, Moon, MoveRight } from "lucide-react";
 
 const Home = () => {
   const { darkMode, setDarkMode } = useContext(ViewContext);
   const Nav_Links = ["ABOUT", "PROJECTS", "SKILLS", "CONTACT"];
+  const STATS = [
+    { id: 1, value: "2", suffix: "+", label: "Live Projects" },
+    { id: 2, value: "1", suffix: "st", label: "Year BTech" },
+    { id: 3, value: "12", suffix: "+", label: "Tech Stack Items" },
+    { id: 4, value: "∞", suffix: "", label: "Lines Ahead" },
+  ];
+
+  const scrollTo = (id) =>
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+
+  const dm = darkMode;
+
   return (
-    <>
-      <div
-        className={`h-screen ${darkMode ? "bg-black text-white" : "bg-white text-black"}`}
-      >
-        {/* Navbar */}
-        <div
-          className={`fixed top-0 left-0 right-0 w-full h-30 flex items-center justify-between px-18 border-b ${darkMode ? "border-white/20" : "border-black/20"}`}
-        >
-          <h1 className="text-3xl font-black playfair-font">MP.</h1>
-          <div className="h-full flex items-center gap-15 mt-2">
-            {Nav_Links.map((link) => (
-              <>
-                <React.Fragment key={link}>
-                  <a
-                    onClick={() => {
-                      document
-                        .getElementById(link.toLowerCase())
-                        ?.scrollIntoView({ behavior: "smooth" });
-                    }}
-                    className="text-lg font-bold playfair-font pb-1 cursor-pointer"
-                    style={{
-                      borderBottom: `1px solid ${darkMode ? "transparent" : "transparent"}`,
-                      transition: "border-color 500ms",
-                    }}
-                    onMouseEnter={(e) =>
-                      (e.target.style.borderBottomColor = darkMode
-                        ? "white"
-                        : "black")
-                    }
-                    onMouseLeave={(e) =>
-                      (e.target.style.borderBottomColor = "transparent")
-                    }
-                  >
-                    {link}
-                  </a>
-                </React.Fragment>
-              </>
-            ))}
-          </div>
-          <div
-            className={`h-12 w-12 flex items-center justify-center border-2 ${darkMode ? "border-white hover:bg-white hover:text-black" : "border-black hover:bg-black hover:text-white"} duration-500 transition-colors cursor-pointer`}
-          >
-            {darkMode ? (
-              <>
-                <Sun onClick={() => setDarkMode((prev) => !prev)} />
-              </>
-            ) : (
-              <>
-                <Moon onClick={() => setDarkMode((prev) => !prev)} />
-              </>
-            )}
-          </div>
+    <div className={`min-h-screen ${dm ? "bg-black text-white" : "bg-white text-black"} transition-colors duration-500`}>
+
+      {/* Navbar */}
+      <nav className={`fixed top-0 left-0 right-0 z-50 w-full h-20 flex items-center justify-between px-18 border-b ${dm ? "border-white/10 bg-black/80" : "border-black/10 bg-white/80"} backdrop-blur-sm transition-colors duration-500`}>
+        <h1 className="text-3xl font-black playfair-font tracking-tight">MP.</h1>
+
+        <div className="flex items-center gap-12">
+          {Nav_Links.map((link) => (
+            <React.Fragment key={link}>
+              <span
+                onClick={() => scrollTo(link.toLowerCase())}
+                className="text-sm font-bold jetbrains-mono-font cursor-pointer pb-0.5"
+                style={{ borderBottom: "1px solid transparent", transition: "border-color 400ms" }}
+                onMouseEnter={(e) => (e.currentTarget.style.borderBottomColor = dm ? "white" : "black")}
+                onMouseLeave={(e) => (e.currentTarget.style.borderBottomColor = "transparent")}
+              >
+                {link}
+              </span>
+            </React.Fragment>
+          ))}
         </div>
-      </div>
-    </>
+
+        <button
+          onClick={() => setDarkMode((prev) => !prev)}
+          className={`h-11 w-11 flex items-center justify-center border-2 ${dm ? "border-white hover:bg-white hover:text-black" : "border-black hover:bg-black hover:text-white"} transition-colors duration-500 cursor-pointer`}
+        >
+          {dm ? <Sun size={18} /> : <Moon size={18} />}
+        </button>
+      </nav>
+
+      {/* Hero */}
+      <section id="home" className={`min-h-screen pt-40 pb-25 px-50 flex flex-col justify-center border-b-8 ${darkMode ? 'border-white' : 'border-black'}`}>
+        <div className="flex items-center gap-4 mb-10">
+          <div className={`w-10 h-px ${dm ? "bg-white/60" : "bg-black/60"}`} />
+          <p className="text-sm jetbrains-mono-font tracking-widest opacity-60">
+            BTECH · COMPUTER ENGINEERING (AI) · VIT PUNE · 2028
+          </p>
+        </div>
+        <div className="flex flex-col leading-none mb-12 gap-2">
+          <h1 className="text-[9rem] font-black playfair-font tracking-tight">Mangnale</h1>
+          <h1 className="text-[9rem] font-black playfair-font-italic tracking-tight">Prathamesh</h1>
+        </div>
+        <div className="flex items-center gap-4 mb-10">
+          <div className={`w-55 h-px ${dm ? "bg-white/60" : "bg-black/60"}`} />
+          <div className={`w-3 h-3 rotate-45 border-2 ${dm ? "border-white/60" : "border-black/60"}`} />
+        </div>
+        <p className="text-5xl playfair-font-italic tracking-wide w-[70%] leading-tight mb-12 opacity-90">
+          Full-stack engineer in the making.
+          <br />
+          Building for the web, one commit at a time.
+        </p>
+        <div className="flex gap-6 mb-14">
+          <button
+            onClick={() => scrollTo("projects")}
+            className={`px-8 py-4 text-sm jetbrains-mono-font border-2 flex items-center gap-3 transition-colors duration-400 cursor-pointer
+              ${dm ? "border-white bg-white text-black hover:bg-black hover:text-white" : "border-black bg-black text-white hover:bg-white hover:text-black"}`}
+          >
+            VIEW PROJECTS <MoveRight size={16} />
+          </button>
+          <button
+            onClick={() => scrollTo("contact")}
+            className={`px-8 py-4 text-sm jetbrains-mono-font border-2 flex items-center gap-3 transition-colors duration-400 cursor-pointer
+              ${dm ? "border-white/40 text-white hover:border-white hover:bg-white hover:text-black" : "border-black/40 text-black hover:border-black hover:bg-black hover:text-white"}`}
+          >
+            GET IN TOUCH
+          </button>
+        </div>
+
+        {/* Stats */}
+        <div className={`grid grid-cols-4 border-t-2 ${dm ? "border-white/50" : "border-black/50"}`}>
+          {STATS.map((stat, i) => (
+            <div
+              key={stat.id}
+              className={`flex flex-col gap-3 py-10 px-10 ${i !== STATS.length - 1 ? `border-r-2 ${dm ? "border-white/50" : "border-black/50"}` : ""}`}
+            >
+              <div className="flex items-end gap-1">
+                <span className="text-5xl font-black playfair-font">{stat.value}</span>
+                <span className="text-2xl font-bold playfair-font mb-1">{stat.suffix}</span>
+              </div>
+              <p className={`text-xs tracking-[0.2em] uppercase ${dm ? "text-white/40" : "text-black/40"}`}>
+                {stat.label}
+              </p>
+            </div>
+          ))}
+        </div>
+
+      </section>
+
+      {/* About */}
+      <section id="about" className="h-auto w-full pb-25 px-50 flex flex-col">
+
+      </section>
+    </div>
   );
 };
 
