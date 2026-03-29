@@ -6,13 +6,6 @@ const ViewProvider = ({children}) => {
         const saved = localStorage.getItem("darkMode");
         return saved === "true";
     });
-    const [adminUser, setAdminUser] = useState({
-        id: "",
-        name: "",
-        email: "",
-        role: ""
-    });
-    const [loggedOut,setLoggedOut] = useState(false)
     useEffect(() => {
         localStorage.setItem("darkMode", darkMode);
     }, [darkMode]);
@@ -21,10 +14,6 @@ const ViewProvider = ({children}) => {
             {
                 darkMode,
                 setDarkMode,
-                adminUser,
-                setAdminUser,
-                setLoggedOut,
-                loggedOut
             }
         }>
             {children}
