@@ -29,6 +29,21 @@ const Home = () => {
     },
   ];
 
+  const DOMAIN_STYLES = (darkMode) => ({
+    "FULL STACK": darkMode ? "bg-white text-black" : "bg-black text-white",
+    FRONTEND: darkMode
+      ? "border border-white text-white"
+      : "border border-black text-black",
+    "WEB DEV": darkMode
+      ? "border border-white text-white"
+      : "border border-black text-black",
+    ACADEMIC: darkMode
+      ? "border border-green-400/80 text-green-300"
+      : "border border-green-600/80 text-green-700",
+    LEARNING: darkMode
+      ? "border border-blue-400/80 text-blue-300"
+      : "border border-blue-600/80 text-blue-700",
+  });
   const PROJECTS = [
     {
       id: 1,
@@ -47,6 +62,45 @@ const Home = () => {
       stack: ["REACT", "TAILWIND CSS", "MONGODB", "SHADCN", "EXPRESSJS"],
       year: 2025,
       visit: "https://indrail.codewithpratham.me",
+    },
+  ];
+
+  const ACTIVITY_LOG = [
+    {
+      id: 1,
+      time: "April - 2026",
+      title: "Planned IndRail — full-stack railway portal",
+      domain: "FULL STACK",
+    },
+    {
+      id: 2,
+      time: "March - 2026",
+      title: "Designed my Portfolio - codewithpratham.me",
+      domain: "FRONTEND",
+    },
+    {
+      id: 3,
+      time: "March - 2026",
+      title: "Developed Team Griffin India's site",
+      domain: "WEB DEV",
+    },
+    {
+      id: 4,
+      time: "Sept - 2025",
+      title: "Enrolled at VIT Pune, B.Tech CSE (AI)",
+      domain: "ACADEMIC",
+    },
+    {
+      id: 5,
+      time: "May - 2025",
+      title: "Began deep dive into Web Development and Other Tech Stack",
+      domain: "LEARNING",
+    },
+    {
+      id: 6,
+      time: "Jan - 2025",
+      title: "Started the basic of Computers and Tech",
+      domain: "LEARNING",
     },
   ];
 
@@ -368,6 +422,89 @@ const Home = () => {
                 </ul>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Education and Timeline  */}
+      <section
+        id="skills"
+        className={`h-auto w-full pb-25 pt-20 px-50 flex flex-col items-start border-b-8 ${darkMode ? "border-white" : "border-black"}`}
+      >
+        <div className="flex flex-col gap-4 w-full">
+          <h1 className="jetbrains-mono-font">§ 004</h1>
+          <div className="flex justify-between w-full mb-16">
+            <div className="flex flex-col tracking-wider">
+              <h1 className="text-6xl playfair-font font-black">
+                Education <span className="playfair-font-italic">&</span>
+              </h1>
+              <h1 className="text-6xl playfair-font-italic font-black">
+                Timeline.
+              </h1>
+            </div>
+          </div>
+          <div className="flex items-start justify-between">
+            <div
+              className={`px-8 py-7 flex flex-col gap-4 border-2 ${darkMode ? "border-white" : "border-black"}`}
+            >
+              <h1 className="jetbrains-mono-font text-sm font-bold text-neutral-400">
+                2026 - Present
+              </h1>
+              <h1 className="playfair-font text-xl font-bold">
+                B.Tech - Computer Science Enggineering (AI)
+              </h1>
+              <h1 className="source-serif-font text-lg font-bold text-neutral-400">
+                Vishwakarma Institue of Technology, Pune
+              </h1>
+              <hr className="border-neutral-500" />
+              <div
+                className={`px-3 py-1 text-center text-sm font-bold jetbrains-mono-font ${darkMode ? "bg-white text-black" : "bg-black text-white"} w-[28%]`}
+              >
+                FIRST YEAR
+              </div>
+            </div>
+            <div
+              className={`px-15 flex flex-col gap-5 border-l border-neutral-500`}
+            >
+              <h1 className="jetbrains-mono-font text-sm font-bold text-neutral-400 mb-4">
+                ACTIVITY LOG
+              </h1>
+              <div
+                className={`flex flex-col divide-y ${darkMode ? "divide-neutral-400" : "divide-neutral-600"} cursor-pointer`}
+              >
+                {ACTIVITY_LOG.map((activity) => (
+                  <div
+                    key={activity.id}
+                    className={`grid grid-cols-[120px_20px_1fr] border-t last:border-b ${darkMode ? "border-white/10" : "border-black/10"}`}
+                  >
+                    <div
+                      className={`py-7 pt-8 text-sm jetbrains-mono-font font-bold self-start ${darkMode ? "text-white" : "text-black"}`}
+                    >
+                      {activity.time}
+                    </div>
+
+                    <div className="py-7 pt-8 flex justify-center">
+                      <span
+                        className={`w-1.5 h-1.5 rounded-full mt-1 shrink-0 ${darkMode ? "bg-white" : "bg-black"}`}
+                      />
+                    </div>
+
+                    <div className="py-7 pt-8 pb-8 pl-4">
+                      <p
+                        className={`font-semibold text-lg jetbrains-mono-font leading-snug mb-3 ${darkMode ? "text-white" : "text-black"}`}
+                      >
+                        {activity.title}
+                      </p>
+                      <span
+                        className={`text-xs tracking-widest font-medium px-2 py-1 ${DOMAIN_STYLES(darkMode)[activity.domain]}`}
+                      >
+                        {activity.domain}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </section>
