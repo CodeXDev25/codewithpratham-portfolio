@@ -104,6 +104,15 @@ const Home = () => {
     },
   ];
 
+  const CONNECT_INFO = [
+    { social: "EMAIL", link: "mangnaleprathamesh@gmail.com" },
+    { social: "GITHUB", link: "https://github.com/Pratham-0x19" },
+    {
+      social: "LINKEDIN",
+      link: "https://www.linkedin.com/in/mangnale-prathamesh",
+    },
+  ];
+
   const scrollTo = (id) =>
     document
       .getElementById(id)
@@ -504,6 +513,110 @@ const Home = () => {
                   </div>
                 ))}
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Let's Connect */}
+      <section
+        id="contact"
+        className={`h-auto w-full pb-25 pt-20 px-50 flex flex-col items-start border-b-8 ${darkMode ? "border-black bg-white text-black" : "border-white bg-black text-white"}`}
+      >
+        <div className="w-full flex justify-between items-start gap-20">
+          <div className="flex flex-col gap-4 w-1/2">
+            <h1 className="jetbrains-mono-font">§ 005</h1>
+            <div className="flex justify-between w-full mb-6">
+              <div className="flex flex-col tracking-wider">
+                <h1 className="text-8xl playfair-font font-black">Let's</h1>
+                <h1 className="text-8xl playfair-font-italic font-black">
+                  Connect.
+                </h1>
+              </div>
+            </div>
+            <p
+              className={`text-2xl playfair-font mb-9 w-[75%] font-semibold ${darkMode ? "text-neutral-700" : "text-neutral-400"}`}
+            >
+              Whether you're looking to collaborate on a project, discuss ideas,
+              or just say hi — my inbox is always open.
+            </p>
+            <div className="flex flex-col items-start w-full">
+              {CONNECT_INFO.map((item) => (
+                <>
+                  <div className="mb-2 flex flex-col gap-3 w-full">
+                    <div className="flex items-center gap-8">
+                      <h1 className="jetbrains-mono-font text-lg font-bold w-24 shrink-0">
+                        {item.social}
+                      </h1>
+                      <h1
+                        className={`source-serif-font text-lg font-bold  ${darkMode ? "hover:text-black text-neutral-600" : "hover:text-white text-neutral-400"} duration-500 transition-colors cursor-pointer`}
+                        onClick={() =>
+                          item.social === "EMAIL"
+                            ? openInNewTab(
+                                `https://mail.google.com/mail/?view=cm&to=${item.link}`,
+                              )
+                            : openInNewTab(item.link)
+                        }
+                      >
+                        {item.link}
+                      </h1>
+                    </div>
+                    <hr className="h-2" />
+                  </div>
+                </>
+              ))}
+            </div>
+          </div>
+          <div className="flex flex-col gap-10 w-1/2 p-5">
+            <div className="flex flex-col gap-8 border-t border-b border-neutral-600 py-8 px-5">
+              <h1
+                className={`jetbrains-mono-font text-lg font-bold ${darkMode ? "text-neutral-600" : "text-neutral-400"}`}
+              >
+                SEND A MESSAGE
+              </h1>
+              <div className="flex flex-col gap-2">
+                <h1
+                  className={`jetbrains-mono-font text-sm font-bold ${darkMode ? "text-neutral-600" : "text-neutral-400"}`}
+                >
+                  YOUR NAME
+                </h1>
+                <input
+                  type="text"
+                  className={`border-2 ${darkMode ? "border-black text-black placeholder:text-neutral-700" : "border-white text-white placeholder:text-neutral-400"} py-2 px-3 playfair-font font-bold outline-none focus:outline-none`}
+                  placeholder="Adtiya Singh"
+                />
+              </div>
+              <div className="flex flex-col gap-2">
+                <h1
+                  className={`jetbrains-mono-font text-sm font-bold ${darkMode ? "text-neutral-600" : "text-neutral-400"}`}
+                >
+                  YOUR EMAIL
+                </h1>
+                <input
+                  type="text"
+                  className={`border-2 ${darkMode ? "border-black text-black placeholder:text-neutral-700" : "border-white text-white placeholder:text-neutral-400"} py-2 px-3 playfair-font font-bold outline-none focus:outline-none`}
+                  placeholder="aditya@example.com"
+                />
+              </div>
+              <div className="flex flex-col gap-2">
+                <h1
+                  className={`jetbrains-mono-font text-sm font-bold ${darkMode ? "text-neutral-600" : "text-neutral-400"}`}
+                >
+                  YOUR EMAIL
+                </h1>
+                <textarea
+                  type="text"
+                  className={`border-2 h-30 ${darkMode ? "border-black text-black placeholder:text-neutral-700" : "border-white text-white placeholder:text-neutral-400"} py-2 px-3 playfair-font font-bold outline-none focus:outline-none`}
+                  placeholder="Tell me what you have in mind ..."
+                />
+              </div>
+              <button
+                onClick={() => scrollTo("contact")}
+                className={`w-[30%] px-5 py-4 text-sm jetbrains-mono-font border-2 flex items-center justify-center gap-3 transition-colors duration-400 cursor-pointer
+              ${dm ? "bg-black text-white hover:bg-white hover:text-black border-black" : "bg-white text-black hover:bg-black hover:text-white"}`}
+              >
+                SEND MESSAGE
+              </button>
             </div>
           </div>
         </div>
