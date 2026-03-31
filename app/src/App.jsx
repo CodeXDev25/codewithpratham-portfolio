@@ -12,7 +12,7 @@ function App() {
       <BrowserRouter>
         <ScrollToTop />
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<DevTemplate />} />
         </Routes>
       </BrowserRouter>
     </>
