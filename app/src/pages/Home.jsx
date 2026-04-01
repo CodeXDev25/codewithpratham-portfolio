@@ -11,14 +11,15 @@ const Home = () => {
   });
 
   const [status, setStatus] = useState("idle");
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setStatus("idle")
-    },2500)
+      setStatus("idle");
+    }, 2500);
 
-    return () => clearTimeout(timer)
-  },[status])
+    return () => clearTimeout(timer);
+  }, [status]);
 
   const openInNewTab = (url) => {
     window.open(url, "_blank", "noopener,noreferrer");
@@ -175,18 +176,21 @@ const Home = () => {
     <div
       className={`min-h-screen ${dm ? "bg-black text-white" : "bg-white text-black"} transition-colors duration-500 unselectable-text`}
     >
-      {/* Navbar */}
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 w-full h-20 flex items-center justify-between px-18 border-b ${dm ? "border-white/10 bg-black/80" : "border-black/10 bg-white/80"} backdrop-blur-sm transition-colors duration-500`}
+        className={`fixed top-0 left-0 right-0 z-50 w-full h-16 md:h-20 flex items-center justify-between
+      px-5 sm:px-8 lg:px-14 xl:px-18
+      border-b ${dm ? "border-white/10 bg-black/80" : "border-black/10 bg-white/80"}
+      backdrop-blur-sm transition-colors duration-500`}
       >
         <h1
-          className="text-3xl font-black playfair-font tracking-tight cursor-pointer"
+          className="text-2xl md:text-3xl font-black playfair-font tracking-tight cursor-pointer"
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         >
           MP.
         </h1>
 
-        <div className="flex items-center gap-12">
+        {/* Desktop nav links */}
+        <div className="hidden md:flex items-center gap-8 lg:gap-12">
           {Nav_Links.map((link) => (
             <React.Fragment key={link}>
               <span
@@ -211,56 +215,111 @@ const Home = () => {
           ))}
         </div>
 
-        <button
-          onClick={() => setDarkMode((prev) => !prev)}
-          className={`h-11 w-11 flex items-center justify-center border-2 ${dm ? "border-white hover:bg-white hover:text-black" : "border-black hover:bg-black hover:text-white"} transition-colors duration-500 cursor-pointer`}
-        >
-          {dm ? <Sun size={18} /> : <Moon size={18} />}
-        </button>
-      </nav>
+        <div className="flex items-center gap-3">
+          {/* Dark mode toggle */}
+          <button
+            onClick={() => setDarkMode((prev) => !prev)}
+            className={`h-9 w-9 md:h-11 md:w-11 flex items-center justify-center border-2
+          ${dm ? "border-white hover:bg-white hover:text-black" : "border-black hover:bg-black hover:text-white"}
+          transition-colors duration-500 cursor-pointer`}
+          >
+            {dm ? <Sun size={16} /> : <Moon size={16} />}
+          </button>
 
-      {/* Hero */}
+          {/* Mobile hamburger */}
+          <button
+            className="md:hidden flex flex-col gap-1.5 cursor-pointer p-1"
+            onClick={() => setMenuOpen((prev) => !prev)}
+            aria-label="Toggle menu"
+          >
+            <span
+              className={`block w-6 h-0.5 ${dm ? "bg-white" : "bg-black"} transition-all duration-300 ${menuOpen ? "rotate-45 translate-y-2" : ""}`}
+            />
+            <span
+              className={`block w-6 h-0.5 ${dm ? "bg-white" : "bg-black"} transition-all duration-300 ${menuOpen ? "opacity-0" : ""}`}
+            />
+            <span
+              className={`block w-6 h-0.5 ${dm ? "bg-white" : "bg-black"} transition-all duration-300 ${menuOpen ? "-rotate-45 -translate-y-2" : ""}`}
+            />
+          </button>
+        </div>
+        {menuOpen && (
+          <div
+            className={`absolute top-16 left-0 right-0 z-50 flex flex-col gap-0
+          ${dm ? "bg-black/95 border-white/10" : "bg-white/95 border-black/10"}
+          border-b backdrop-blur-sm md:hidden`}
+          >
+            {Nav_Links.map((link) => (
+              <span
+                key={link}
+                onClick={() => {
+                  scrollTo(link.toLowerCase());
+                  setMenuOpen(false);
+                }}
+                className={`px-6 py-4 text-sm font-bold jetbrains-mono-font cursor-pointer
+              border-b ${dm ? "border-white/10 hover:bg-white/5" : "border-black/10 hover:bg-black/5"}
+              transition-colors`}
+              >
+                {link}
+              </span>
+            ))}
+          </div>
+        )}
+      </nav>
       <section
         id="home"
-        className={`min-h-screen pt-40 pb-25 px-50 flex flex-col justify-center border-b-8 ${darkMode ? "border-white" : "border-black"}`}
+        className={`min-h-screen
+      pt-28 sm:pt-32 md:pt-40
+      pb-14 sm:pb-20 md:pb-25
+      px-5 sm:px-8 md:px-16 lg:px-28 xl:px-50
+      flex flex-col justify-center
+      border-b-8 ${darkMode ? "border-white" : "border-black"}`}
       >
-        <div className="flex items-center gap-4 mb-10">
-          <div className={`w-10 h-px ${dm ? "bg-white/60" : "bg-black/60"}`} />
-          <p className="text-sm jetbrains-mono-font tracking-widest opacity-60">
+        <div className="flex items-center gap-4 mb-8 md:mb-10">
+          <div
+            className={`w-6 sm:w-10 h-px ${dm ? "bg-white/60" : "bg-black/60"}`}
+          />
+          <p className="text-xs sm:text-sm jetbrains-mono-font tracking-widest opacity-60">
             BTECH · COMPUTER ENGINEERING (AI) · VIT PUNE · 2028
           </p>
         </div>
-        <div className="flex flex-col leading-none mb-12 gap-2">
-          <h1 className="text-[9rem] font-black playfair-font tracking-tight">
+
+        <div className="flex flex-col leading-none mb-8 md:mb-12 gap-1 md:gap-2">
+          <h1 className="text-[2.8rem] xs:text-[3.5rem] sm:text-[5rem] md:text-[6.5rem] lg:text-[8rem] xl:text-[9rem] font-black playfair-font tracking-tight">
             Mangnale
           </h1>
-          <h1 className="text-[9rem] font-black playfair-font-italic tracking-tight">
+          <h1 className="text-[2.8rem] xs:text-[3.5rem] sm:text-[5rem] md:text-[6.5rem] lg:text-[8rem] xl:text-[9rem] font-black playfair-font-italic tracking-tight">
             Prathamesh
           </h1>
         </div>
-        <div className="flex items-center gap-4 mb-10">
-          <div className={`w-55 h-px ${dm ? "bg-white/60" : "bg-black/60"}`} />
+
+        <div className="flex items-center gap-4 mb-8 md:mb-10">
+          <div
+            className={`w-24 sm:w-40 md:w-55 h-px ${dm ? "bg-white/60" : "bg-black/60"}`}
+          />
           <div
             className={`w-3 h-3 rotate-45 border-2 ${dm ? "border-white/60" : "border-black/60"}`}
           />
         </div>
-        <p className="text-5xl playfair-font-italic tracking-wide w-[70%] leading-tight mb-12 opacity-90">
+
+        <p className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl playfair-font-italic tracking-wide w-full md:w-[80%] lg:w-[70%] leading-tight mb-10 md:mb-12 opacity-90">
           Full-stack engineer in the making.
           <br />
           Building for the web, one commit at a time.
         </p>
-        <div className="flex gap-6 mb-14">
+
+        <div className="flex flex-col xl:flex-row gap-4 mb-12 md:mb-14">
           <button
             onClick={() => scrollTo("projects")}
-            className={`px-8 py-4 text-sm jetbrains-mono-font border-2 flex items-center gap-3 transition-colors duration-400 cursor-pointer
-              ${dm ? "border-white bg-white text-black hover:bg-black hover:text-white" : "border-black bg-black text-white hover:bg-white hover:text-black"}`}
+            className={`px-6 md:px-8 py-3 md:py-4 text-sm jetbrains-mono-font border-2 flex items-center justify-center gap-3 transition-colors duration-400 cursor-pointer
+          ${dm ? "border-white bg-white text-black hover:bg-black hover:text-white" : "border-black bg-black text-white hover:bg-white hover:text-black"}`}
           >
             VIEW PROJECTS <MoveRight size={16} />
           </button>
           <button
             onClick={() => scrollTo("contact")}
-            className={`px-8 py-4 text-sm jetbrains-mono-font border-2 flex items-center gap-3 transition-colors duration-400 cursor-pointer
-              ${dm ? "border-white/40 text-white hover:border-white hover:bg-white hover:text-black" : "border-black/40 text-black hover:border-black hover:bg-black hover:text-white"}`}
+            className={`px-6 md:px-8 py-3 md:py-4 text-sm jetbrains-mono-font border-2 flex items-center justify-center gap-3 transition-colors duration-400 cursor-pointer
+          ${dm ? "border-white/40 text-white hover:border-white hover:bg-white hover:text-black" : "border-black/40 text-black hover:border-black hover:bg-black hover:text-white"}`}
           >
             GET IN TOUCH
           </button>
@@ -268,18 +327,22 @@ const Home = () => {
 
         {/* Stats */}
         <div
-          className={`grid grid-cols-4 border-t-2 ${dm ? "border-white/50" : "border-black/50"}`}
+          className={`grid grid-cols-2 md:grid-cols-4 border-t-2 ${dm ? "border-white/50" : "border-black/50"}`}
         >
           {STATS.map((stat, i) => (
             <div
               key={stat.id}
-              className={`flex flex-col gap-3 py-10 px-10 ${i !== STATS.length - 1 ? `border-r-2 ${dm ? "border-white/50" : "border-black/50"}` : ""}`}
+              className={`flex flex-col gap-3 py-8 md:py-10 px-5 md:px-10
+            ${i % 2 !== 1 ? `border-r-2 ${dm ? "border-white/50" : "border-black/50"}` : ""}
+            ${i < 2 ? `border-b-2 md:border-b-0 ${dm ? "border-white/50" : "border-black/50"}` : ""}
+            ${i === 3 ? `md:border-r-0` : `md:border-r-2 md:${dm ? "border-white/50" : "border-black/50"}`}
+          `}
             >
               <div className="flex items-end gap-1">
-                <span className="text-5xl font-black playfair-font">
+                <span className="text-3xl sm:text-4xl md:text-5xl font-black playfair-font">
                   {stat.value}
                 </span>
-                <span className="text-2xl font-bold playfair-font mb-1">
+                <span className="text-xl sm:text-2xl font-bold playfair-font mb-1">
                   {stat.suffix}
                 </span>
               </div>
@@ -292,39 +355,47 @@ const Home = () => {
           ))}
         </div>
       </section>
-
-      {/* About */}
       <section
         id="about"
-        className={`h-auto w-full pb-25 pt-20 px-50 flex justify-between items-start border-b-8 ${darkMode ? "border-white" : "border-black"}`}
+        className={`h-auto w-full
+      pb-16 sm:pb-20 md:pb-25
+      pt-14 sm:pt-16 md:pt-20
+      px-5 sm:px-8 md:px-16 lg:px-28 xl:px-50
+      flex flex-col lg:flex-row justify-between items-start gap-10 lg:gap-0
+      border-b-8 ${darkMode ? "border-white" : "border-black"}`}
       >
         <div className="flex flex-col gap-6">
           <h1 className="jetbrains-mono-font">§ 001</h1>
           <div className="flex flex-col tracking-wider">
-            <h1 className="text-5xl playfair-font font-black">About</h1>
-            <h1 className="text-5xl playfair-font-italic font-black">Me.</h1>
+            <h1 className="text-4xl md:text-5xl playfair-font font-black">
+              About
+            </h1>
+            <h1 className="text-4xl md:text-5xl playfair-font-italic font-black">
+              Me.
+            </h1>
           </div>
         </div>
-        <div className="flex flex-col w-[50%]">
+
+        <div className="flex flex-col w-full lg:w-[55%]">
           <div className="flex gap-2 items-center">
             <div
-              className={`px-4 py-3 text-6xl border-2 ${darkMode ? "border-white" : "border-black"} playfair-font font-bold`}
+              className={`px-3 md:px-4 py-2 md:py-3 text-4xl md:text-6xl border-2 ${darkMode ? "border-white" : "border-black"} playfair-font font-bold shrink-0`}
             >
               I
             </div>
-            <p className="source-serif-font text-xl font-semibold leading-9">
+            <p className="source-serif-font text-base md:text-xl font-semibold leading-8 md:leading-9">
               'm a first-year B.Tech Computer Engineering student at Vishwakarma
               Institute of Technology, Pune — driven by a deep fascination with
               building things that live on the web. I write code that solves
               real
             </p>
           </div>
-          <p className="source-serif-font text-xl font-semibold leading-9 mb-6">
+          <p className="source-serif-font text-base md:text-xl font-semibold leading-8 md:leading-9 mb-5 md:mb-6">
             problems, and I obsess over clean architecture and purposeful
             design.
           </p>
           <p
-            className={`source-serif-font text-xl font-semibold leading-9 ${darkMode ? "text-neutral-500" : "text-neutral-600"} mb-9`}
+            className={`source-serif-font text-base md:text-xl font-semibold leading-8 md:leading-9 ${darkMode ? "text-neutral-500" : "text-neutral-600"} mb-7 md:mb-9`}
           >
             From crafting team websites to architecting full-stack railway
             platforms, I engage with every layer of the stack — frontend
@@ -337,16 +408,18 @@ const Home = () => {
               beautifully.
             </span>
           </p>
-          <div className="w-full h-0.5 bg-neutral-600"></div>
-          <div className="mt-8 flex gap-8">
+          <div className="w-full h-0.5 bg-neutral-600" />
+          <div className="mt-6 md:mt-8 flex flex-col sm:flex-row gap-6 sm:gap-8">
             <div className="flex flex-col gap-1">
-              <h1 className="jetbrains-mono-font text-neutral-600">LOCATION</h1>
+              <h1 className="jetbrains-mono-font text-neutral-600 text-sm">
+                LOCATION
+              </h1>
               <h1 className="source-serif-font font-semibold">
                 Pune, Maharashtra
               </h1>
             </div>
             <div className="flex flex-col gap-1">
-              <h1 className="jetbrains-mono-font text-neutral-600">
+              <h1 className="jetbrains-mono-font text-neutral-600 text-sm">
                 INSTITUTION
               </h1>
               <h1 className="source-serif-font font-semibold">
@@ -354,28 +427,35 @@ const Home = () => {
               </h1>
             </div>
             <div className="flex flex-col gap-1">
-              <h1 className="jetbrains-mono-font text-neutral-600">BATCH</h1>
+              <h1 className="jetbrains-mono-font text-neutral-600 text-sm">
+                BATCH
+              </h1>
               <h1 className="source-serif-font font-semibold">2025 - 2029</h1>
             </div>
           </div>
         </div>
       </section>
-
-      {/* Projects */}
       <section
         id="projects"
-        className={`h-auto w-full pb-25 pt-20 px-50 flex flex-col items-start border-b-8 ${darkMode ? "border-white" : "border-black"}`}
+        className={`h-auto w-full
+      pb-16 sm:pb-20 md:pb-25
+      pt-14 sm:pt-16 md:pt-20
+      px-5 sm:px-8 md:px-16 lg:px-28 xl:px-50
+      flex flex-col items-start
+      border-b-8 ${darkMode ? "border-white" : "border-black"}`}
       >
         <div className="flex flex-col gap-4 w-full">
           <h1 className="jetbrains-mono-font">§ 002</h1>
-          <div className="flex justify-between w-full mb-10">
+          <div className="flex justify-between w-full mb-8 md:mb-10 items-end">
             <div className="flex flex-col tracking-wider">
-              <h1 className="text-5xl playfair-font font-black">Selected</h1>
-              <h1 className="text-5xl playfair-font-italic font-black">
+              <h1 className="text-4xl md:text-5xl playfair-font font-black">
+                Selected
+              </h1>
+              <h1 className="text-4xl md:text-5xl playfair-font-italic font-black">
                 Projects.
               </h1>
             </div>
-            <div className="flex flex-col justify-end">
+            <div className="flex flex-col justify-end text-right">
               <h1 className="text-sm text-neutral-500 jetbrains-mono-font">
                 02 Projects
               </h1>
@@ -384,54 +464,57 @@ const Home = () => {
               </h1>
             </div>
           </div>
+
           <div
             className={`flex flex-col divide-y border-t border-b ${darkMode ? "divide-neutral-400 border-neutral-400" : "divide-neutral-600 border-neutral-600"} cursor-pointer`}
           >
             {PROJECTS.map((project, i) => (
-              <>
-                <div
-                  key={i}
-                  className={`grid grid-cols-[80px_1fr] gap-6 py-10 px-8 items-center group ${darkMode ? "hover:bg-white hover:text-black" : "hover:bg-black hover:text-white"}  transition-colors duration-500`}
+              <div
+                key={i}
+                className={`grid grid-cols-[48px_1fr] sm:grid-cols-[80px_1fr] gap-3 sm:gap-6 py-7 md:py-10 px-3 sm:px-8 items-center group
+              ${darkMode ? "hover:bg-white hover:text-black" : "hover:bg-black hover:text-white"}
+              transition-colors duration-500`}
+              >
+                <span
+                  className={`text-4xl sm:text-6xl font-black playfair-font select-none ${darkMode ? "text-neutral-600" : "text-neutral-700"}`}
                 >
-                  <span
-                    className={`text-6xl font-black playfair-font select-none ${darkMode ? "text-neutral-600" : "text-neutral-700"}`}
-                  >
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
+                  {String(i + 1).padStart(2, "0")}
+                </span>
 
-                  <div className="flex flex-col gap-4">
-                    <div className="flex items-start justify-between">
-                      <h1 className="text-3xl font-bold playfair-font">
-                        {project.title}
-                      </h1>
-                      <span
-                        className={`border source-serif-font ${darkMode ? "border-white group-hover:border-black" : "border-black group-hover:border-white"} text-xs px-3 py-1 tracking-widest mr-3 transition-colors duration-500`}
-                      >
-                        {project.domain}
-                      </span>
-                    </div>
-                    <p
-                      className={`text-lg source-serif-font font-bold ${darkMode ? "border-white group-hover:border-black" : "border-black group-hover:border-white"} leading-relaxed max-w-2xl`}
+                <div className="flex flex-col gap-3 md:gap-4">
+                  <div className="flex flex-col sm:flex-row items-start sm:justify-between gap-2">
+                    <h1 className="text-xl md:text-3xl font-bold playfair-font">
+                      {project.title}
+                    </h1>
+                    <span
+                      className={`border source-serif-font ${darkMode ? "border-white group-hover:border-black" : "border-black group-hover:border-white"} text-xs px-3 py-1 tracking-widest sm:mr-3 transition-colors duration-500 self-start`}
                     >
-                      {project.desc}
-                    </p>
-                    <hr className="border-neutral-700" />
-                    <div className="flex items-center justify-between">
-                      <div className="flex gap-3 flex-wrap">
-                        {project.stack.map((item) => (
-                          <span
-                            key={item}
-                            className={`border source-serif-font ${darkMode ? "border-white group-hover:border-black" : "border-black group-hover:border-white"} text-xs px-3 py-1 tracking-widest transition-colors duration-500`}
-                          >
-                            {item}
-                          </span>
-                        ))}
-                      </div>
-                      <span className="text-sm jetbrains-mono-font text-neutral-400 mr-3">
+                      {project.domain}
+                    </span>
+                  </div>
+                  <p
+                    className={`text-base md:text-lg source-serif-font font-bold leading-relaxed max-w-2xl`}
+                  >
+                    {project.desc}
+                  </p>
+                  <hr className="border-neutral-700" />
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                    <div className="flex gap-2 flex-wrap">
+                      {project.stack.map((item) => (
+                        <span
+                          key={item}
+                          className={`border source-serif-font ${darkMode ? "border-white group-hover:border-black" : "border-black group-hover:border-white"} text-xs px-3 py-1 tracking-widest transition-colors duration-500`}
+                        >
+                          {item}
+                        </span>
+                      ))}
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <span className="text-sm jetbrains-mono-font text-neutral-400">
                         {project.year}
                       </span>
                       <button
-                        className={`text-xs border px-3 py-1  ${darkMode ? "border-white group-hover:border-black" : "border-black group-hover:border-white"} transition-colors duration-500 tracking-widest source-serif-font mr-3 cursor-pointer`}
+                        className={`text-xs border px-3 py-1 ${darkMode ? "border-white group-hover:border-black" : "border-black group-hover:border-white"} transition-colors duration-500 tracking-widest source-serif-font cursor-pointer`}
                         onClick={() => openInNewTab(project.visit)}
                       >
                         VISIT
@@ -439,45 +522,52 @@ const Home = () => {
                     </div>
                   </div>
                 </div>
-              </>
+              </div>
             ))}
           </div>
         </div>
       </section>
-
-      {/* Tech Stack */}
       <section
         id="skills"
-        className={`h-auto w-full pb-25 pt-20 px-50 flex flex-col items-start border-b-8 ${darkMode ? "border-black bg-white text-black" : "border-white bg-black text-white"}`}
+        className={`h-auto w-full
+      pb-16 sm:pb-20 md:pb-25
+      pt-14 sm:pt-16 md:pt-20
+      px-5 sm:px-8 md:px-16 lg:px-28 xl:px-50
+      flex flex-col items-start
+      border-b-8 ${darkMode ? "border-black bg-white text-black" : "border-white bg-black text-white"}`}
       >
         <div className="flex flex-col gap-4 w-full">
           <h1 className="jetbrains-mono-font">§ 003</h1>
-          <div className="flex justify-between w-full mb-10">
+          <div className="flex justify-between w-full mb-8 md:mb-10">
             <div className="flex flex-col tracking-wider">
-              <h1 className="text-7xl playfair-font font-black">Tech</h1>
-              <h1 className="text-7xl playfair-font-italic font-black">
+              <h1 className="text-5xl md:text-7xl playfair-font font-black">
+                Tech
+              </h1>
+              <h1 className="text-5xl md:text-7xl playfair-font-italic font-black">
                 Stack.
               </h1>
             </div>
           </div>
           <div
-            className={`grid grid-cols-4 border-t-2 ${dm ? "border-black/50" : "border-white/50"}`}
+            className={`grid grid-cols-2 lg:grid-cols-4 border-t-2 divide-x-2
+    ${dm ? "border-black/50 divide-black/50" : "border-white/50 divide-white/50"}`}
           >
-            {TECH_STACK.map((stack, i) => (
+            {TECH_STACK.map((stack) => (
               <div
                 key={stack.id}
-                className={`flex flex-col gap-3 py-10 px-10 ${i !== STATS.length - 1 ? `border-r-2 ${dm ? "border-black/50" : "border-white/50"}` : ""}`}
+                className="flex flex-col gap-3 py-8 md:py-10 px-5 md:px-10"
               >
-                <p className="text-lg text-neutral-600 jetbrains-mono-font font-bold">
+                <p className="text-base md:text-lg text-neutral-600 jetbrains-mono-font font-bold">
                   {stack.title}
                 </p>
-                <ul className="flex flex-col gap-5 list-disc px-6">
+                <ul className="flex flex-col gap-3 md:gap-5 list-disc px-5 md:px-6">
                   {stack.stack.map((item) => (
-                    <>
-                      <li className="playfair-font font-bold text-xl">
-                        {item}
-                      </li>
-                    </>
+                    <li
+                      key={item}
+                      className="playfair-font font-bold text-lg md:text-xl"
+                    >
+                      {item}
+                    </li>
                   ))}
                 </ul>
               </div>
@@ -485,48 +575,55 @@ const Home = () => {
           </div>
         </div>
       </section>
-
-      {/* Education and Timeline  */}
       <section
-        id="skills"
-        className={`h-auto w-full pb-25 pt-20 px-50 flex flex-col items-start border-b-8 ${darkMode ? "border-white" : "border-black"}`}
+        id="timeline"
+        className={`h-auto w-full
+      pb-16 sm:pb-20 md:pb-25
+      pt-14 sm:pt-16 md:pt-20
+      px-5 sm:px-8 md:px-16 lg:px-28 xl:px-50
+      flex flex-col items-start
+      border-b-8 ${darkMode ? "border-white" : "border-black"}`}
       >
         <div className="flex flex-col gap-4 w-full">
           <h1 className="jetbrains-mono-font">§ 004</h1>
-          <div className="flex justify-between w-full mb-16">
+          <div className="flex justify-between w-full mb-10 md:mb-16">
             <div className="flex flex-col tracking-wider">
-              <h1 className="text-6xl playfair-font font-black">
+              <h1 className="text-4xl md:text-6xl playfair-font font-black">
                 Education <span className="playfair-font-italic">&</span>
               </h1>
-              <h1 className="text-6xl playfair-font-italic font-black">
+              <h1 className="text-4xl md:text-6xl playfair-font-italic font-black">
                 Timeline.
               </h1>
             </div>
           </div>
-          <div className="flex items-start justify-between">
+
+          <div className="flex flex-col lg:flex-row items-start justify-between gap-10 lg:gap-8">
+            {/* Education card */}
             <div
-              className={`px-8 py-7 flex flex-col gap-4 border-2 ${darkMode ? "border-white" : "border-black"}`}
+              className={`w-full lg:w-auto px-6 md:px-8 py-6 md:py-7 flex flex-col gap-4 border-2 ${darkMode ? "border-white" : "border-black"} shrink-0`}
             >
               <h1 className="jetbrains-mono-font text-sm font-bold text-neutral-400">
                 2026 - Present
               </h1>
-              <h1 className="playfair-font text-xl font-bold">
-                B.Tech - Computer Science Enggineering (AI)
+              <h1 className="playfair-font text-lg md:text-xl font-bold">
+                B.Tech - Computer Science Engineering (AI)
               </h1>
-              <h1 className="source-serif-font text-lg font-bold text-neutral-400">
-                Vishwakarma Institue of Technology, Pune
+              <h1 className="source-serif-font text-base md:text-lg font-bold text-neutral-400">
+                Vishwakarma Institute of Technology, Pune
               </h1>
               <hr className="border-neutral-500" />
               <div
-                className={`px-3 py-1 text-center text-sm font-bold jetbrains-mono-font ${darkMode ? "bg-white text-black" : "bg-black text-white"} w-[28%]`}
+                className={`px-3 py-1 text-center text-sm font-bold jetbrains-mono-font ${darkMode ? "bg-white text-black" : "bg-black text-white"} w-fit`}
               >
                 FIRST YEAR
               </div>
             </div>
+
+            {/* Activity log */}
             <div
-              className={`px-15 flex flex-col gap-5 border-l border-neutral-500`}
+              className={`w-full lg:flex-1 px-5 md:px-15 flex flex-col gap-5 border-l border-neutral-500`}
             >
-              <h1 className="jetbrains-mono-font text-sm font-bold text-neutral-400 mb-4">
+              <h1 className="jetbrains-mono-font text-sm font-bold text-neutral-400 mb-2 md:mb-4">
                 ACTIVITY LOG
               </h1>
               <div
@@ -535,23 +632,21 @@ const Home = () => {
                 {ACTIVITY_LOG.map((activity) => (
                   <div
                     key={activity.id}
-                    className={`grid grid-cols-[120px_20px_1fr] border-t last:border-b ${darkMode ? "border-white/10" : "border-black/10"}`}
+                    className={`grid grid-cols-[90px_16px_1fr] sm:grid-cols-[120px_20px_1fr] border-t last:border-b ${darkMode ? "border-white/10" : "border-black/10"}`}
                   >
                     <div
-                      className={`py-7 pt-8 text-sm jetbrains-mono-font font-bold self-start ${darkMode ? "text-white" : "text-black"}`}
+                      className={`py-5 md:py-7 pt-6 md:pt-8 text-xs sm:text-sm jetbrains-mono-font font-bold self-start ${darkMode ? "text-white" : "text-black"}`}
                     >
                       {activity.time}
                     </div>
-
-                    <div className="py-7 pt-8 flex justify-center">
+                    <div className="py-5 md:py-7 pt-6 md:pt-8 flex justify-center">
                       <span
                         className={`w-1.5 h-1.5 rounded-full mt-1 shrink-0 ${darkMode ? "bg-white" : "bg-black"}`}
                       />
                     </div>
-
-                    <div className="py-7 pt-8 pb-8 pl-4">
+                    <div className="py-5 md:py-7 pt-6 md:pt-8 pb-6 md:pb-8 pl-3 md:pl-4">
                       <p
-                        className={`font-semibold text-lg jetbrains-mono-font leading-snug mb-3 ${darkMode ? "text-white" : "text-black"}`}
+                        className={`font-semibold text-base md:text-lg jetbrains-mono-font leading-snug mb-3 ${darkMode ? "text-white" : "text-black"}`}
                       >
                         {activity.title}
                       </p>
@@ -568,64 +663,74 @@ const Home = () => {
           </div>
         </div>
       </section>
-
-      {/* Let's Connect */}
       <section
         id="contact"
-        className={`h-auto w-full pb-25 pt-20 px-50 flex flex-col items-start border-b-8 ${darkMode ? "border-black bg-white text-black" : "border-white bg-black text-white"}`}
+        className={`h-auto w-full
+      pb-16 sm:pb-20 md:pb-25
+      pt-14 sm:pt-16 md:pt-20
+      px-5 sm:px-8 md:px-16 lg:px-28 xl:px-50
+      flex flex-col items-start
+      border-b-8 ${darkMode ? "border-black bg-white text-black" : "border-white bg-black text-white"}`}
       >
-        <div className="w-full flex justify-between items-start gap-20">
-          <div className="flex flex-col gap-4 w-1/2">
+        <div className="w-full flex flex-col lg:flex-row justify-between items-start gap-12 lg:gap-20">
+          {/* Left: heading + links */}
+          <div className="flex flex-col gap-4 w-full lg:w-1/2">
             <h1 className="jetbrains-mono-font">§ 005</h1>
-            <div className="flex justify-between w-full mb-6">
+            <div className="flex justify-between w-full mb-4 md:mb-6">
               <div className="flex flex-col tracking-wider">
-                <h1 className="text-8xl playfair-font font-black">Let's</h1>
-                <h1 className="text-8xl playfair-font-italic font-black">
+                <h1 className="text-6xl md:text-8xl playfair-font font-black">
+                  Let's
+                </h1>
+                <h1 className="text-6xl md:text-8xl playfair-font-italic font-black">
                   Connect.
                 </h1>
               </div>
             </div>
             <p
-              className={`text-2xl playfair-font mb-9 w-[75%] font-semibold ${darkMode ? "text-neutral-700" : "text-neutral-400"}`}
+              className={`text-lg md:text-2xl playfair-font mb-7 md:mb-9 w-full lg:w-[75%] font-semibold ${darkMode ? "text-neutral-700" : "text-neutral-400"}`}
             >
               Whether you're looking to collaborate on a project, discuss ideas,
               or just say hi — my inbox is always open.
             </p>
             <div className="flex flex-col items-start w-full">
               {CONNECT_INFO.map((item) => (
-                <>
-                  <div className="mb-2 flex flex-col gap-3 w-full">
-                    <div className="flex items-center gap-8">
-                      <h1 className="jetbrains-mono-font text-lg font-bold w-24 shrink-0">
-                        {item.social}
-                      </h1>
-                      <h1
-                        className={`source-serif-font text-lg font-bold  ${darkMode ? "hover:text-black text-neutral-600" : "hover:text-white text-neutral-400"} duration-500 transition-colors cursor-pointer`}
-                        onClick={() =>
-                          item.social === "EMAIL"
-                            ? openInNewTab(
-                                `https://mail.google.com/mail/?view=cm&to=${item.link}`,
-                              )
-                            : openInNewTab(item.link)
-                        }
-                      >
-                        {item.link}
-                      </h1>
-                    </div>
-                    <hr className="h-2" />
+                <div
+                  key={item.social}
+                  className="mb-2 flex flex-col gap-3 w-full"
+                >
+                  <div className="flex flex-col xs:flex-row items-start xs:items-center gap-2 xs:gap-8">
+                    <h1 className="jetbrains-mono-font text-base md:text-lg font-bold w-24 shrink-0">
+                      {item.social}
+                    </h1>
+                    <h1
+                      className={`source-serif-font text-base md:text-lg font-bold break-all ${darkMode ? "hover:text-black text-neutral-600" : "hover:text-white text-neutral-400"} duration-500 transition-colors cursor-pointer`}
+                      onClick={() =>
+                        item.social === "EMAIL"
+                          ? openInNewTab(
+                              `https://mail.google.com/mail/?view=cm&to=${item.link}`,
+                            )
+                          : openInNewTab(item.link)
+                      }
+                    >
+                      {item.link}
+                    </h1>
                   </div>
-                </>
+                  <hr className="h-2" />
+                </div>
               ))}
             </div>
           </div>
-          <div className="flex flex-col gap-10 w-1/2 p-5">
-            <div className="flex flex-col gap-8 border-t border-b border-neutral-600 py-8 px-5">
+
+          {/* Right: contact form */}
+          <div className="flex flex-col gap-10 w-full lg:w-1/2 p-0 lg:p-5">
+            <div className="flex flex-col gap-6 md:gap-8 border-t border-b border-neutral-600 py-7 md:py-8 px-0 md:px-5">
               <h1
-                className={`jetbrains-mono-font text-lg font-bold ${darkMode ? "text-neutral-600" : "text-neutral-400"}`}
+                className={`jetbrains-mono-font text-base md:text-lg font-bold ${darkMode ? "text-neutral-600" : "text-neutral-400"}`}
               >
                 SEND A MESSAGE
               </h1>
 
+              {/* Name */}
               <div className="flex flex-col gap-2">
                 <h1
                   className={`jetbrains-mono-font text-sm font-bold ${darkMode ? "text-neutral-600" : "text-neutral-400"}`}
@@ -638,7 +743,7 @@ const Home = () => {
                     setFormData({ ...formData, name: e.target.value })
                   }
                   type="text"
-                  className={`border-2 ${darkMode ? "border-black text-black placeholder:text-neutral-700" : "border-white text-white placeholder:text-neutral-400"} py-2 px-3 playfair-font font-bold outline-none focus:outline-none`}
+                  className={`border-2 ${darkMode ? "border-black text-black placeholder:text-neutral-700" : "border-white text-white placeholder:text-neutral-400"} py-2 px-3 playfair-font font-bold outline-none focus:outline-none w-full`}
                   placeholder="Aditya Singh"
                 />
                 {status === "error" && !formData.name && (
@@ -648,6 +753,7 @@ const Home = () => {
                 )}
               </div>
 
+              {/* Email */}
               <div className="flex flex-col gap-2">
                 <h1
                   className={`jetbrains-mono-font text-sm font-bold ${darkMode ? "text-neutral-600" : "text-neutral-400"}`}
@@ -660,7 +766,7 @@ const Home = () => {
                     setFormData({ ...formData, email: e.target.value })
                   }
                   type="text"
-                  className={`border-2 ${darkMode ? "border-black text-black placeholder:text-neutral-700" : "border-white text-white placeholder:text-neutral-400"} py-2 px-3 playfair-font font-bold outline-none focus:outline-none`}
+                  className={`border-2 ${darkMode ? "border-black text-black placeholder:text-neutral-700" : "border-white text-white placeholder:text-neutral-400"} py-2 px-3 playfair-font font-bold outline-none focus:outline-none w-full`}
                   placeholder="aditya@example.com"
                 />
                 {status === "error" && !formData.email && (
@@ -675,6 +781,7 @@ const Home = () => {
                 )}
               </div>
 
+              {/* Message */}
               <div className="flex flex-col gap-2">
                 <h1
                   className={`jetbrains-mono-font text-sm font-bold ${darkMode ? "text-neutral-600" : "text-neutral-400"}`}
@@ -686,7 +793,7 @@ const Home = () => {
                   onChange={(e) =>
                     setFormData({ ...formData, message: e.target.value })
                   }
-                  className={`border-2 h-30 ${darkMode ? "border-black text-black placeholder:text-neutral-700" : "border-white text-white placeholder:text-neutral-400"} py-2 px-3 playfair-font font-bold outline-none focus:outline-none`}
+                  className={`border-2 h-28 md:h-30 ${darkMode ? "border-black text-black placeholder:text-neutral-700" : "border-white text-white placeholder:text-neutral-400"} py-2 px-3 playfair-font font-bold outline-none focus:outline-none w-full`}
                   placeholder="Tell me what you have in mind ..."
                 />
                 {status === "error" && !formData.message && (
@@ -696,9 +803,8 @@ const Home = () => {
                 )}
               </div>
 
-              {/* Global success / failed banner */}
               {status === "success" && (
-                <div className={`border-2 border-green-500 px-4 py-3`}>
+                <div className="border-2 border-green-500 px-4 py-3">
                   <p className="jetbrains-mono-font text-xs text-green-500 font-bold tracking-wider">
                     ✓ MESSAGE SENT SUCCESSFULLY
                   </p>
@@ -715,9 +821,9 @@ const Home = () => {
               <button
                 onClick={handleSend}
                 disabled={status === "sending"}
-                className={`w-[30%] px-5 py-4 text-sm jetbrains-mono-font border-2 flex items-center justify-center gap-3 transition-colors duration-400 cursor-pointer
-        ${darkMode ? "bg-black text-white hover:bg-white hover:text-black border-black" : "bg-white text-black hover:bg-black hover:text-white border-white"}
-        ${status === "sending" ? "opacity-50 cursor-not-allowed" : ""}`}
+                className={`w-full sm:w-auto px-5 py-3 md:py-4 text-sm jetbrains-mono-font border-2 flex items-center justify-center gap-3 transition-colors duration-400 cursor-pointer
+              ${darkMode ? "bg-black text-white hover:bg-white hover:text-black border-black" : "bg-white text-black hover:bg-black hover:text-white border-white"}
+              ${status === "sending" ? "opacity-50 cursor-not-allowed" : ""}`}
               >
                 {status === "sending" ? "SENDING..." : "SEND MESSAGE →"}
               </button>
@@ -726,21 +832,21 @@ const Home = () => {
         </div>
       </section>
 
-      <footer
-        className={`relative h-auto w-full py-5 px-18 flex justify-between items-center`}
-      >
+      {/* ── FOOTER ─────────────────────────────────────────────────────────────── */}
+      <footer className="h-auto w-full py-5 px-5 sm:px-8 lg:px-14 xl:px-18 flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-0">
         <h1
-          className="text-2xl playfair-font font-black leading-none cursor-pointer"
+          className="text-xl md:text-2xl playfair-font font-black leading-none cursor-pointer"
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         >
           Mangnale Prathamesh.
         </h1>
+        {/* Centre tag: absolute on desktop, normal flow on mobile */}
         <p
-          className={`absolute left-1/2 -translate-x-1/2 text-sm jetbrains-mono-font tracking-widest font-bold leading-none ${darkMode ? "text-neutral-500" : "text-neutral-700"} cursor-pointer`}
+          className={`sm:absolute sm:left-1/2 sm:-translate-x-1/2 text-xs sm:text-sm jetbrains-mono-font tracking-widest font-bold leading-none text-center ${darkMode ? "text-neutral-500" : "text-neutral-700"} cursor-pointer`}
         >
           BTECH · COMPUTER ENGINEERING (AI) · VIT PUNE · 2028
         </p>
-        <p className="text-sm jetbrains-mono-font tracking-widest font-bold leading-none cursor-pointer">
+        <p className="text-xs sm:text-sm jetbrains-mono-font tracking-widest font-bold leading-none cursor-pointer text-center sm:text-right">
           <span onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
             codewithpratham.me
           </span>{" "}
