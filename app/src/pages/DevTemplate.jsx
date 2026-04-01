@@ -10,41 +10,41 @@ const DevTemplate = () => {
   return (
     <>
       <div
-        className={`h-screen ${darkMode ? "bg-black text-white" : "bg-white text-black"} unselectable-text`}
+        className={`min-h-screen ${darkMode ? "bg-black text-white" : "bg-white text-black"} unselectable-text`}
       >
         {/* Navbar */}
-        <div className="fixed top-0 left-0 right-0 w-full h-30 flex items-center justify-between px-18">
-          <h1 className="text-3xl font-black playfair-font">MP.</h1>
+        <div className="fixed top-0 left-0 right-0 w-full h-16 sm:h-20 md:h-30 flex items-center justify-between px-5 sm:px-10 md:px-18">
+          <h1 className="text-2xl md:text-3xl font-black playfair-font">MP.</h1>
           <div
-            className={`h-12 w-12 flex items-center justify-center border-2 ${darkMode ? "border-white hover:bg-white hover:text-black" : "border-black hover:bg-black hover:text-white"} duration-500 transition-colors cursor-pointer`}
+            className={`h-9 w-9 sm:h-12 sm:w-12 flex items-center justify-center border-2 ${darkMode ? "border-white hover:bg-white hover:text-black" : "border-black hover:bg-black hover:text-white"} duration-500 transition-colors cursor-pointer`}
           >
             {darkMode ? (
               <>
-                <Sun onClick={() => setDarkMode((prev) => !prev)} />
+                <Sun size={16} onClick={() => setDarkMode((prev) => !prev)} />
               </>
             ) : (
               <>
-                <Moon onClick={() => setDarkMode((prev) => !prev)} />
+                <Moon size={16} onClick={() => setDarkMode((prev) => !prev)} />
               </>
             )}
           </div>
         </div>
 
         {/* Hero */}
-        <section className="py-35 px-30 flex flex-col items-center justify-center w-full h-full">
+        <section className="py-28 sm:py-32 md:py-35 px-6 sm:px-16 md:px-30 flex flex-col items-center justify-center w-full h-full">
           <div className="flex flex-col items-center">
             <div className="flex items-center gap-3">
               <div
                 className={`w-8 h-0.5 ${darkMode ? "bg-white" : "bg-black"}`}
               ></div>
-              <h1 className="text-lg jetbrains-mono-font font-bold">
+              <h1 className="text-sm sm:text-base md:text-lg jetbrains-mono-font font-bold">
                 dev.codewithpratham.me
               </h1>
             </div>
-            <h1 className="text-5xl md:text-7xl font-black text-start leading-tight playfair-font">
+            <h1 className="text-3xl sm:text-5xl md:text-7xl font-black text-start leading-tight playfair-font">
               No Active Development <br />
             </h1>
-            <p className="text-gray-600 font-mono text-lg tracking-widest uppercase mt-4">
+            <p className="text-gray-600 font-mono text-sm sm:text-base md:text-lg tracking-widest uppercase mt-4">
               — Visit{" "}
               <span
                 className="hover:text-white duration-500 transition-colors cursor-pointer"
