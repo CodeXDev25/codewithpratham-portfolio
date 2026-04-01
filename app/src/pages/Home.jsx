@@ -549,13 +549,12 @@ const Home = () => {
             </div>
           </div>
           <div
-            className={`grid grid-cols-2 lg:grid-cols-4 border-t-2 divide-x-2
-    ${dm ? "border-black/50 divide-black/50" : "border-white/50 divide-white/50"}`}
+            className={`grid grid-cols-2 lg:grid-cols-4 border-t-2 ${dm ? "border-black/50" : "border-white/50"}`}
           >
-            {TECH_STACK.map((stack) => (
+            {TECH_STACK.map((stack, i) => (
               <div
                 key={stack.id}
-                className="flex flex-col gap-3 py-8 md:py-10 px-5 md:px-10"
+                className={`flex flex-col gap-3 py-8 md:py-10 px-5 md:px-10 ${dm ? "border-black/50" : "border-white/50"} ${i % 2 === 0 ? "border-r-2" : ""} ${i < 2 ? "border-b-2 lg:border-b-0" : ""} ${i < 3 ? "lg:border-r-2" : "lg:border-r-0"}`}
               >
                 <p className="text-base md:text-lg text-neutral-600 jetbrains-mono-font font-bold">
                   {stack.title}
